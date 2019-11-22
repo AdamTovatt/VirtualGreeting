@@ -2,6 +2,7 @@
 <html lang="en-US">
 <head>
     <script type="text/javascript" src="Api.js"></script>
+    <script type="text/javascript" src="QrCode.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
     <meta charset="UTF-8">
@@ -13,18 +14,34 @@
     </div>
     <div id="edit" class="mainContainer"></div>
     <div id="view" class="mainContainer"></div>
+    <div id="qrCode" class="mainContainer"></div>
 </body>
 </html>
 <script>
     Main(new URLSearchParams(window.location.search));
+
+    var currentId = null;
+    var currentViewHash = null;
+    var currentEditHash = null;
+
+    var display_view = document.getElementById("view");
+    var display_edit = document.getElementById("edit");
+    var display_start = document.getElementById("start");
 
     async function Main(urlParams) {
         var api = new Api();
 
         if (urlParams.get("mode")) {
             if (urlParams.get("mode") == "view") {
-                if (urlParams.get("id") && urlParams.get("hash"))
-                    document.getElementById("view").innerHTML = api.GetGreetingData(urlParams.get("id"), urlParams.get("hash"));
+                if (urlParams.get("id") && urlParams.get("hash")) {
+                    currentViewHash = urlParams.get("hash");
+                    currentId = urlParams.get("id");
+                    var response = await api.GetGreetingData(currentId, currentViewHash);
+                    console.log(response)
+                    display_view.style.display = "block";
+                    display_view.innerHTML = response;
+                    displayQrCode();
+                }
             }
             else if (urlParams.get("mode") == "edit") {
 
@@ -38,6 +55,18 @@
     }
 
     function displayStart() {
-        document.getElementById("start").style.display = "block";
+        display_start.style.display = "block";
+    }
+
+    function displayQrCode() {
+        var qrcode = new QRCode(document.getElementById("qrCode"), {
+            text: "https://tottevonboi.github.io/VirtualGreeting/?mode=view&id=" + currentId + "&hash=" + currentViewHash,
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        document.getElementById("qrCode").style.display = "block";
     }
 </script>

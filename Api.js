@@ -9,6 +9,7 @@ class Api {
             let xhr = new XMLHttpRequest();
             xhr.open(method, requestUrl);
             xhr.onload = function () {
+                console.log("he");
                 resolve(xhr.response);
             };
             xhr.onerror = function () {

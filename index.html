@@ -3,6 +3,7 @@
 <head>
     <script type="text/javascript" src="Api.js"></script>
     <script type="text/javascript" src="QrCode.js"></script>
+    <script type="text/javascript" src="Editor.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
     <meta charset="UTF-8">
@@ -10,7 +11,7 @@
 </head>
 <body>
     <div id="start" class="mainContainer">
-        <button>Hej</button>
+        <button onclick="CreateNewGreeting()">Create New Greeting</button>
     </div>
     <div id="edit" class="mainContainer"></div>
     <div id="view" class="mainContainer"></div>
@@ -18,40 +19,47 @@
 </body>
 </html>
 <script>
-    Main(new URLSearchParams(window.location.search));
-
     var currentId = null;
     var currentViewHash = null;
     var currentEditHash = null;
+    var api = new Api();
 
     var display_view = document.getElementById("view");
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
 
     async function Main(urlParams) {
-        var api = new Api();
+        if (urlParams.get("mode") && urlParams.get("id") && urlParams.get("hash")) {
+            currentViewHash = urlParams.get("hash");
+            currentId = urlParams.get("id");
 
-        if (urlParams.get("mode")) {
             if (urlParams.get("mode") == "view") {
-                if (urlParams.get("id") && urlParams.get("hash")) {
-                    currentViewHash = urlParams.get("hash");
-                    currentId = urlParams.get("id");
-                    var response = await api.GetGreetingData(currentId, currentViewHash);
-                    console.log(response)
-                    display_view.style.display = "block";
-                    display_view.innerHTML = response;
-                    displayQrCode();
-                }
+                var response = await api.GetGreetingData(currentId, currentViewHash);
+                console.log(response);
+                display_view.style.display = "block";
+                display_view.innerHTML = response;
+                displayQrCode();
             }
             else if (urlParams.get("mode") == "edit") {
-
+                OpenEditor(Editor.create(currentId, currentViewHash))
             }
-            else
+            else {
                 displayStart();
+            }
         }
         else {
             displayStart();
         }
+    }
+
+    function OpenEditor(editor) {
+        display_edit.style.display = "block";
+        display_edit.innerHTML = editor.id + " " + editor.viewHash + " " + editor.editHash;
+    }
+
+    async function CreateNewGreeting() {
+        var response = JSON.parse(await api.Init());
+        OpenEditor(Editor.create(response["id"], response["hash"], response["editorHash"], api));
     }
 
     function displayStart() {
@@ -69,4 +77,6 @@
         });
         document.getElementById("qrCode").style.display = "block";
     }
+
+    Main(new URLSearchParams(window.location.search));
 </script>

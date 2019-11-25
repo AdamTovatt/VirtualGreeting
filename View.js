@@ -12,8 +12,7 @@ class View {
             }
             if (greeting.texts) {
                 for (var i = 0; i < greeting.texts.length; i++) {
-                    var text = greeting.texts[i];
-                    result += this.textGetHtml(text.text, editor);
+                    result += this.textGetHtml(greeting.texts[i], editor);
                 }
             }
         }
@@ -23,10 +22,10 @@ class View {
 
     static textGetHtml(text, editor) {
             if (editor) {
-                return '<p><textarea name="Text1" cols="40" rows="5">' + text + '</textarea></p>';
+                return '<p><textarea id="' + text.id + '" cols="40" rows="5">' + text.text + '</textarea></p>';
             }
             else {
-                return '<p>' + text + '</p>';
+                return '<p>' + text.text + '</p>';
             }
     }
 }

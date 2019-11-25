@@ -60,10 +60,10 @@
 
             if (urlParams.get("mode") == "view") {
                 document.body.style.background = "rgb(255, 255, 255)"
-                var response = await api.GetGreetingData(currentId, currentViewHash);
-                console.log(response);
+                var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
+                console.log("re3sponse: "+ JSON.stringify(response));
                 display_view.style.display = "block";
-                display_view.innerHTML = View.GetHtml(response.greetingData, false);
+                display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
                 document.body.style.background = "linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%)";
             }
             else if (urlParams.get("mode") == "edit") {
@@ -92,11 +92,15 @@
     }
 
     function AddText() {
-        currentEditor.greetingData.texts.push(new Text("new text"));
+        currentEditor.greetingData.texts.push(new Text("new text", currentEditor.greetingData.texts.length));
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
     }
 
     async function SaveCurrentGreeting() {
+        for (var i = 0; i < currentEditor.greetingData.texts.length; i++) {
+            console.log(document.getElementById(currentEditor.greetingData.texts[i].id));
+            currentEditor.greetingData.texts[i].text = document.getElementById(currentEditor.greetingData.texts[i].id).value;
+        }
         await api.UpdateGreetingData(currentEditor.id, currentEditor.editHash, currentEditor.greetingData);
         console.log("saved");
     }

@@ -5,7 +5,8 @@ class GreetingData {
 }
 
 class Text {
-    constructor(text) {
+    constructor(text, id) {
         this.text = text;
+        this.id = "textfield_" + id;
     }
 }

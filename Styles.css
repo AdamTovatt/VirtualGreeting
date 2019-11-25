@@ -1,5 +1,14 @@
 .mainContainer {
+    margin-top: 7%;
     display: none;
+    text-align: center;
+}
+
+.table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .normalButton:hover {
@@ -23,6 +32,48 @@
 
 .listButton {
     width: 300px;
+}
+
+.editButton {
+    border: none;
+    font-family: 'Rubik';
+    font-weight: 300;
+    font-size: 0.7em;
+    letter-spacing: 1px;
+    margin: 0 0 0 .5em;
+    background-color: transparent;
+    color: rgb(240, 240, 240);
+    height: 40px;
+}
+
+    .editButton:hover {
+        color: rgb(220, 220, 220);
+        font-size: 0.75em;
+        margin: 0 0 0 .45em;
+    }
+
+.plusButton {
+    border: none;
+    border-radius: 42px;
+    font-family: 'Rubik';
+    font-weight: 700;
+    font-size: 1.8em;
+    letter-spacing: 1px;
+    margin: 0 0 0 .5em;
+    background-color: transparent;
+    color: rgb(240, 240, 240);
+    height: 40px;
+}
+
+    .plusButton:hover {
+        color: rgb(220, 220, 220);
+        font-size: 1.9em;
+        margin: 0 0 0 .45em;
+    }
+
+.qrCode {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .textInput {
@@ -58,12 +109,20 @@
 div {
     font-family: Rubik;
     color: var(--black--text);
-    background-color: rgb(255, 255, 255);
+    background-color: inherit;
 }
 
 body {
-    background-color: rgb(255, 255, 255);
+    background: linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%), linear-gradient(127deg, rgba(42, 31, 74,.8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgba(60, 40, 89,.8), rgba(0,0,255,0) 70.71%);
     color: var(--black--text);
+}
+
+html {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 :root {

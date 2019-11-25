@@ -4,7 +4,9 @@
     <script type="text/javascript" src="Api.js"></script>
     <script type="text/javascript" src="QrCode.js"></script>
     <script type="text/javascript" src="Editor.js"></script>
+    <script type="text/javascript" src="View.js"></script>
     <script type="text/javascript" src="CookieManager.js"></script>
+    <script type="text/javascript" src="Models.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
     <meta charset="UTF-8">
@@ -15,7 +17,26 @@
         <div id="startTableContainer" class="tableContainer"></div>
         <button class="plusButton" onclick="CreateNewGreeting()">+</button>
     </div>
-    <div id="edit" class="mainContainer"></div>
+    <div id="edit" class="mainContainer">
+        <div id="editToolPanel" class="editToolPanel">
+            <table>
+                <tr>
+                    <td><button class="toolButton" onclick="displayStart()">back</button></td>
+                    <td><button class="toolButton" onclick="SaveCurrentGreeting()">save</button></td>
+                    <td><button class="toolButton" onclick="displayQrCode()">preview</button></td>
+                    <td><button class="toolButton" onclick="document.getElementById('editToolPanel').style.display = 'none'; document.getElementById('editTextPanel').style.display = 'block'; AddText()">add text</button></td>
+                </tr>
+            </table>
+        </div>
+        <div id="editTextPanel" class="editToolPanel" style="display: none">
+            <table>
+                <tr>
+                    <td><button class="toolButton" onclick="document.getElementById('editToolPanel').style.display = 'block'; document.getElementById('editTextPanel').style.display = 'none'">show tools</button></td>
+                </tr>
+            </table>
+        </div>
+        <div id="editViewArea" class="editViewArea"></div>
+    </div>
     <div id="view" class="mainContainer"></div>
     <div id="qrCode" class="mainContainer"></div>
 </body>
@@ -30,6 +51,8 @@
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
 
+    var currentEditor = null;
+
     async function Main(urlParams) {
         if (urlParams.get("mode") && urlParams.get("id") && urlParams.get("hash")) {
             currentViewHash = urlParams.get("hash");
@@ -40,7 +63,7 @@
                 var response = await api.GetGreetingData(currentId, currentViewHash);
                 console.log(response);
                 display_view.style.display = "block";
-                display_view.innerHTML = response;
+                display_view.innerHTML = View.GetHtml(response.greetingData, false);
                 document.body.style.background = "linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%)";
             }
             else if (urlParams.get("mode") == "edit") {
@@ -56,16 +79,29 @@
     }
 
     function OpenEditor(editor) {
+        console.log(JSON.stringify(editor.greetingData));
+        currentEditor = editor;
         currentViewHash = editor.viewHash;
         currentId = editor.id;
         currentEditHash = editor.editHash;
         display_edit.style.display = "block";
         display_start.style.display = "none";
-        display_edit.innerHTML = editor.id + " " + editor.viewHash + " " + editor.editHash;
-        displayQrCode();
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
+
+        //displayQrCode();
     }
 
-    async function CreateNewGreeting() {    
+    function AddText() {
+        currentEditor.greetingData.texts.push(new Text("new text"));
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+    }
+
+    async function SaveCurrentGreeting() {
+        await api.UpdateGreetingData(currentEditor.id, currentEditor.editHash, currentEditor.greetingData);
+        console.log("saved");
+    }
+
+    async function CreateNewGreeting() {
         var response = JSON.parse(await api.Init());
         response.title = "New Greeting";
         response.created = Date.now();
@@ -75,7 +111,7 @@
             previousGreetings = JSON.parse(Cookie.getCookie("previousGreetings"));
         } catch (e) {
             console.log("could not parse cookie");
-        }   
+        }
 
         if (previousGreetings) {
             previousGreetings.greetings.push(response); console.log("added item to existing cookie");
@@ -89,6 +125,9 @@
 
     function displayStart() {
         //Cookie.setCookie("previousGreetings", null, 1);
+        display_edit.style.display = "none";
+        display_view.style.display = "none";
+
         var previousGreetings = null;
         try {
             previousGreetings = JSON.parse(Cookie.getCookie("previousGreetings"));
@@ -99,14 +138,13 @@
         if (previousGreetings) {
             var table = document.createElement("table");
             table.className = "table";
-            console.log(JSON.stringify(previousGreetings));
             if (previousGreetings.greetings)
                 for (var i = 0; i < previousGreetings.greetings.length; i++) {
                     var tr = table.insertRow(-1);
                     tr.insertCell(-1).innerHTML = previousGreetings.greetings[i].title + " - " + new Date(previousGreetings.greetings[i].created).toLocaleDateString("en-US");
                     tr.insertCell(-1).innerHTML = '<input type="button" value="' + "edit" + '" class="editButton" onclick="EditButton(' + previousGreetings.greetings[i].id + ", '" + previousGreetings.greetings[i].editorHash + "');\"/>";
-                    console.log("p: " + JSON.stringify(previousGreetings.greetings[i]));
                 }
+            document.getElementById("startTableContainer").innerHTML = "";
             document.getElementById("startTableContainer").appendChild(table);
         }
 
@@ -121,15 +159,17 @@
         var element = document.getElementById("qrCode");
         var qrcode = new QRCode(element, {
             text: "https://tottevonboi.github.io/VirtualGreeting/?mode=view&id=" + currentId + "&hash=" + currentViewHash,
-            width: 128,
-            height: 128,
+            width: 255,
+            height: 255,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
-        element.style.display = "block";
-        element.className = "qrCode";
-        console.log(qrcode.children.length);
+        var qrelement = element.getElementsByTagName("img")[0];
+        qrelement.className = "qrCode";
+        setTimeout(function () {
+            element.style.display = "block";
+        }, 200);
     }
 
     Main(new URLSearchParams(window.location.search));

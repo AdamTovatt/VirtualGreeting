@@ -2,6 +2,9 @@
     margin-top: 7%;
     display: none;
     text-align: center;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .table {
@@ -18,7 +21,7 @@
 .normalButton {
     border: none;
     border-radius: 8px;
-    font-family: 'Rubik';
+    font-family: 'Quicksand';
     font-weight: 700;
     font-size: 0.9em;
     letter-spacing: 1px;
@@ -34,46 +37,86 @@
     width: 300px;
 }
 
-.editButton {
+.toolButton {
     border: none;
-    font-family: 'Rubik';
+    font-family: 'Quicksand';
     font-weight: 300;
     font-size: 0.7em;
     letter-spacing: 1px;
     margin: 0 0 0 .5em;
     background-color: transparent;
-    color: rgb(240, 240, 240);
+    color: var(--white-lighter-text);
+    height: 40px;
+}
+
+    .toolButton:hover {
+        color: var(--white-lightest-text);
+        font-size: 0.75em;
+        margin: 0 0 0 .40em;
+    }
+
+.editButton {
+    border: none;
+    font-family: 'Quicksand';
+    font-weight: 300;
+    font-size: 0.7em;
+    letter-spacing: 1px;
+    margin: 0 0 0 .5em;
+    background-color: transparent;
+    color: var(--white-lighter-text);
     height: 40px;
 }
 
     .editButton:hover {
-        color: rgb(220, 220, 220);
+        color: var(--white-lightest-text);
         font-size: 0.75em;
-        margin: 0 0 0 .45em;
+        margin: 0 0 0 .40em;
     }
 
 .plusButton {
     border: none;
     border-radius: 42px;
-    font-family: 'Rubik';
-    font-weight: 700;
-    font-size: 1.8em;
+    font-family: 'Quicksand';
+    font-weight: 900;
+    font-size: 2.5em;
     letter-spacing: 1px;
     margin: 0 0 0 .5em;
     background-color: transparent;
-    color: rgb(240, 240, 240);
+    color: var(--white-lighter-text);
     height: 40px;
 }
 
     .plusButton:hover {
-        color: rgb(220, 220, 220);
-        font-size: 1.9em;
-        margin: 0 0 0 .45em;
+        color: var(--white-lightest-text);
+        font-size: 2.7em;
+        margin: -0.04em 0 0 .45em;
     }
 
 .qrCode {
     margin-left: auto;
     margin-right: auto;
+    max-width: 10%;
+    max-height: inherit;
+    animation: qrCode 1s ease normal;
+}
+
+.editToolPanel {
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.editViewArea {
+    padding-top: 6%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 60%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 400px;
+    border: 1px dashed var(--black--text);
+    border-radius: 25px;
 }
 
 .textInput {
@@ -107,14 +150,16 @@
 }
 
 div {
-    font-family: Rubik;
-    color: var(--black--text);
+    font-size: 1.2em;
+    font-family: Quicksand;
+    font-weight: 900;
+    color: inherit;
     background-color: inherit;
 }
 
 body {
     background: linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%), linear-gradient(127deg, rgba(42, 31, 74,.8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgba(60, 40, 89,.8), rgba(0,0,255,0) 70.71%);
-    color: var(--black--text);
+    color: var(--white-light-text);
 }
 
 html {
@@ -130,4 +175,39 @@ html {
     --green-mid: #507748;
     --green-light: #c7e2c0;
     --black--text: #18252a;
+    --white-lightest-text: rgb(240, 240, 240);
+    --white-lighter-text: rgb(230, 230, 230);
+    --white-light-text: rgb(220, 220, 220);
+    --white-dark-text: rgb(180, 180, 180);
+    --white-darker-text: rgb(160, 160, 160);
+}
+
+@keyframes qrCode {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@-webkit-keyframes qrCode {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@-moz-keyframes qrCode {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
 }

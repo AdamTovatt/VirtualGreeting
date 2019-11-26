@@ -21,7 +21,7 @@ class View {
     }
 
     static textGetHtml(text, editor, fonts) {
-        fontText = 'style="font-family:DroidSerif;font-weight:500"';
+        var fontText = 'style="font-family:DroidSerif;font-weight:500"';
         if (text.fontId && text.fontVariationId) {
             fontText = fonts.GetFont(text.fontId, text.fontVariationId);
         }

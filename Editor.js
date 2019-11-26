@@ -31,7 +31,7 @@ class Editor {
 
     GetText(id) {
         for (var i = 0; i < this.greetingData.texts.length; i++) {
-            if (this.greetingData.texts[i].id == currentSelectedObject.id) {
+            if (this.greetingData.texts[i].id == id) {
                 return this.greetingData.texts[i];
                 break;
             }

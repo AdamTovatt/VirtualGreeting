@@ -155,6 +155,7 @@
 
     function SelectText(id) {
         var selectedElement = document.getElementById(id);
+        var text = currentEditor.GetText(id);
 
         if (currentSelectedObject != null && currentSelectedObject.className == "textAreaEdit") {
             DeselectText(currentSelectedObject.id);
@@ -164,6 +165,21 @@
 
         selectedElement.style.border = "dashed 1px rgb(30, 30, 30)";
         selectedElement.style.margin = "-0.75px";
+
+        var dropdown = document.getElementById("fontSelect");
+        var variationDropdown = document.getElementById("fontVariationSelect");
+
+        for (var i = 0; i < dropdown.options.length; i++) {
+            if (dropdown.options[i].value == text.fontId) {
+                dropdown.selectedIndex = i;
+            }
+        }
+
+        for (var i = 0; i < variationDropdown.options.length; i++) {
+            if (variationDropdown.options[i].value == text.fontVariationId) {
+                variationDropdown.selectedIndex = i;
+            }
+        }
 
         document.getElementById('editToolPanel').style.display = 'none';
         document.getElementById('editTextPanel').style.display = 'block';

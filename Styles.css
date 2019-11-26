@@ -185,6 +185,38 @@
     height: 45px;
 }
 
+.select-css {
+    display: block;
+    font-size: 0.7em;
+    font-family: inherit;
+    font-weight: 300;
+    color: var(--white-lighter-text);
+    line-height: 1.1;
+    padding: .3em 0.8em .3em .4em;
+    border: 0px solid #aaa;
+    border-radius: .5em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+}
+
+    .select-css::-ms-expand {
+        display: none;
+    }
+
+    .select-css:hover {
+        border-color: #888;
+        font-size: 0.75em;
+        color: var(--white-lightest-text);
+    }
+
+    .select-css option {
+        font-weight: 300;
+        font-family: inherit;
+        background-color: rgba(59, 39, 71, .85);
+    }
+
 ::placeholder {
     color: var(--green-mid);
 }

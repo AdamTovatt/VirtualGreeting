@@ -22,10 +22,10 @@
         <div id="editToolPanel" class="editToolPanel">
             <table>
                 <tr>
-                    <td><button class="toolButton" onclick="displayStart()">< back</button></td>
-                    <td><button class="toolButton" onclick="SaveCurrentGreeting()">save</button></td>
-                    <td><button class="toolButton" onclick="displayQrCode()">preview</button></td>
-                    <td><button class="toolButton" onclick="AddText()">add text</button></td>
+                    <td><button title="click to go back to list" class="toolButton" onclick="displayStart()">< back</button></td>
+                    <td><button title="click to save the page" class="toolButton" onclick="SaveCurrentGreeting()">save</button></td>
+                    <td><button title="click to view the page" class="toolButton" onclick="displayQrCode()">preview</button></td>
+                    <td><button title="click to add a text to the page" class="toolButton" onclick="AddText()">add text</button></td>
                 </tr>
             </table>
         </div>
@@ -33,8 +33,9 @@
             <table>
                 <tr>
                     <td><button class="toolButton" onclick="ShowTools()">< show tools</button></td>
-                    <td>font: <select id="fontSelect" onchange="FontSelected()"></select></td>
-                    <td>type: <select id="fontVariationSelect" onchange="FontVariationSelected()"></select></td>
+                    <td>font:</td>
+                    <td><select title="click to change" class="select-css" id="fontSelect" onchange="FontSelected()"></select></td>
+                    <td><select title="click to change" class="select-css" id="fontVariationSelect" onchange="FontVariationSelected()"></select></td>
                 </tr>
             </table>
         </div>

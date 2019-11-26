@@ -22,17 +22,17 @@
         <div id="editToolPanel" class="editToolPanel">
             <table>
                 <tr>
-                    <td><button class="toolButton" onclick="displayStart()">back</button></td>
+                    <td><button class="toolButton" onclick="displayStart()">< back</button></td>
                     <td><button class="toolButton" onclick="SaveCurrentGreeting()">save</button></td>
                     <td><button class="toolButton" onclick="displayQrCode()">preview</button></td>
-                    <td><button class="toolButton" onclick="document.getElementById('editToolPanel').style.display = 'none'; document.getElementById('editTextPanel').style.display = 'block'; AddText()">add text</button></td>
+                    <td><button class="toolButton" onclick="AddText()">add text</button></td>
                 </tr>
             </table>
         </div>
         <div id="editTextPanel" class="editToolPanel" style="display: none">
             <table>
                 <tr>
-                    <td><button class="toolButton" onclick="document.getElementById('editToolPanel').style.display = 'block'; document.getElementById('editTextPanel').style.display = 'none'">show tools</button></td>
+                    <td><button class="toolButton" onclick="ShowTools()">< show tools</button></td>
                 </tr>
             </table>
         </div>
@@ -52,6 +52,8 @@
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
     var display_qrModal = document.getElementById("qrModal");
+
+    var currentSelectedObject = null;
 
     var currentEditor = null;
 
@@ -78,12 +80,6 @@
         else {
             displayStart();
         }
-
-        window.onclick = function (event) {
-            if (event.target != display_qrModal) {
-                display_qrModal.style.display = "none";
-            }
-        }
     }
 
     function OpenEditor(editor) {
@@ -98,13 +94,43 @@
     }
 
     function AddText() {
-        currentEditor.greetingData.texts.push(new Text("new text", currentEditor.greetingData.texts.length, 1, 1));
+        var text = new Text("new text", currentEditor.greetingData.texts.length, 1, 1);
+        currentEditor.greetingData.texts.push(text);
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        SelectText(text.id);
+    }
+
+    function SelectText(id) {
+        var selectedElement = document.getElementById(id);
+
+        if (currentSelectedObject != null && currentSelectedObject.className == "textAreaEdit") {
+            DeselectText(currentSelectedObject.id);
+        }
+
+        currentSelectedObject = selectedElement;
+
+        selectedElement.style.border = "dashed 1px rgb(30, 30, 30)";
+        selectedElement.style.margin = "-0.75px";
+
+        document.getElementById('editToolPanel').style.display = 'none';
+        document.getElementById('editTextPanel').style.display = 'block';
+
+        window.onclick = function (event) {
+            if (event.target.id != selectedElement.id) {
+                DeselectText(id);
+            }
+        }
+    }
+
+    function DeselectText(id) {
+        var selectedElement = document.getElementById(id);
+        selectedElement.style.border = "dashed 0px rgb(30, 30, 30)";
+        selectedElement.style.margin = "0px";
+        ShowTools();
     }
 
     async function SaveCurrentGreeting() {
         for (var i = 0; i < currentEditor.greetingData.texts.length; i++) {
-            console.log(document.getElementById(currentEditor.greetingData.texts[i].id).innerText);
             currentEditor.greetingData.texts[i].text = document.getElementById(currentEditor.greetingData.texts[i].id).innerHTML;
         }
         await api.UpdateGreetingData(currentEditor.id, currentEditor.editHash, currentEditor.greetingData);
@@ -131,6 +157,11 @@
         }
         Cookie.setCookie("previousGreetings", JSON.stringify(previousGreetings), 900);
         OpenEditor(await Editor.create(api, response["id"], response["editorHash"], response["hash"], response["title"], response["createddate"]));
+    }
+
+    function ShowTools() {
+        document.getElementById('editToolPanel').style.display = 'block';
+        document.getElementById('editTextPanel').style.display = 'none';
     }
 
     function displayStart() {
@@ -181,6 +212,11 @@
         setTimeout(function () {
             display_qrModal.style.display = "block";
             element.style.display = "inline-block";
+            window.onclick = function (event) {
+                if (event.target != display_qrModal) {
+                    display_qrModal.style.display = "none";
+                }
+            }
         }, 100);
     }
 

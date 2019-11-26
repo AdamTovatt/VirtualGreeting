@@ -26,7 +26,7 @@ class View {
             fontText = fonts.GetFont(text.fontId, text.fontVariationId);
         }
         if (editor) {
-            return '<div contentEditable="true" ' + fontText + ' id="' + text.id + '"class="textAreaEdit" onclick="console.log(\'' + text.id + '\')">' + text.text + '</div>';
+            return '<div contentEditable="true" ' + fontText + ' id="' + text.id + '"class="textAreaEdit" onclick="SelectText(\'' + text.id + '\')">' + text.text + '</div>';
         }
         else {
             return '<div contentEditable="false" ' + fontText + ' id="' + text.id + '"class="textAreaView">' + text.text + '</div>';

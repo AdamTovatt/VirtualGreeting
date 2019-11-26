@@ -1,29 +1,148 @@
 @font-face {
-    font-family: 'Quicksand';
+    font-family: 'Aaargh';
     font-style: normal;
     font-weight: 500;
-    src: url("fonts/Quicksand-Regular.otf") format('opentype');
+    src: url("fonts/Aaargh-Regular.ttf") format('truetype');
 }
 
 @font-face {
-    font-family: 'Quicksand';
+    font-family: 'AftaSansThin';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/AftaSansThin-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'AftaSansThin';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/AftaSansThin-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Amaranth';
     font-style: normal;
     font-weight: 900;
-    src: url("fonts/Quicksand-Bold.otf") format('opentype');
+    src: url("fonts/Amaranth-Bold.otf") format('opentype');
 }
 
 @font-face {
-    font-family: 'Quicksand';
-    font-style: normal;
-    font-weight: 300;
-    src: url("fonts/Quicksand-Light.otf") format('opentype');
+    font-family: 'Amaranth';
+    font-style: italic;
+    font-weight: 900;
+    src: url("fonts/Amaranth-Bold_Italic.otf") format('opentype');
 }
 
 @font-face {
-    font-family: 'DroidSerif';
+    font-family: 'Amaranth';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Amaranth-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Amaranth';
     font-style: normal;
     font-weight: 500;
-    src: url("fonts/DroidSerif-Regular.ttf") format('truetype');
+    src: url("fonts/Amaranth-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Artifika';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Artifika-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Bebas';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Bebas-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'ChunkFive';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/ChunkFive-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/Cicle-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: italic;
+    font-weight: 900;
+    src: url("fonts/Cicle-Bold_Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: normal;
+    font-weight: 300;
+    src: url("fonts/Cicle-Light.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: italic;
+    font-weight: 300;
+    src: url("fonts/Cicle-Light_Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Cicle-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Cicle-Regular_Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Cicle';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Cicle-Shadow.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVuSansMono';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/DejaVuSansMono-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVuSansMono';
+    font-style: oblique;
+    font-weight: 900;
+    src: url("fonts/DejaVuSansMono-Bold_Oblique.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVuSansMono';
+    font-style: oblique;
+    font-weight: 500;
+    src: url("fonts/DejaVuSansMono-Oblique.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVuSansMono';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/DejaVuSansMono-Regular.ttf") format('truetype');
 }
 
 @font-face {
@@ -36,13 +155,223 @@
 @font-face {
     font-family: 'DroidSerif';
     font-style: italic;
+    font-weight: 900;
+    src: url("fonts/DroidSerif-Bold_Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'DroidSerif';
+    font-style: italic;
     font-weight: 500;
     src: url("fonts/DroidSerif-Italic.ttf") format('truetype');
 }
 
 @font-face {
     font-family: 'DroidSerif';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/DroidSerif-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'EBGaramond';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/EBGaramond-Initials.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'EBGaramond12';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/EBGaramond12-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'EBGaramond12';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/EBGaramond12-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'GalSIL';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/GalSIL-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'GalSIL';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/GalSIL-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Hattori_Hanzo';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Hattori_Hanzo-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Hattori_Hanzo';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Hattori_Hanzo-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Junction';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/Junction-bold.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Junction';
+    font-style: normal;
+    font-weight: 300;
+    src: url("fonts/Junction-light.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Junction';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Junction-regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Lacuna';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Lacuna-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Lacuna';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Lacuna-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'LeagueGothic';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/LeagueGothic-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'LeagueGothic';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/LeagueGothic-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/Nobile-Bold-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/Nobile-Bold.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Nobile-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Nobile-Medium.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Nobile-Medium_Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Nobile';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Nobile-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: 'Prociono';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Prociono-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 900;
+    src: url("fonts/Quicksand-Bold.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
     font-style: italic;
     font-weight: 900;
-    src: url("fonts/DroidSerif-Bold_Italic.ttf") format('truetype');
+    src: url("fonts/Quicksand-Bold_Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Quicksand-Dash.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: italic;
+    font-weight: 500;
+    src: url("fonts/Quicksand-Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 300;
+    src: url("fonts/Quicksand-Light.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: italic;
+    font-weight: 300;
+    src: url("fonts/Quicksand-Light_Italic.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 500;
+    src: url("fonts/Quicksand-Regular.otf") format('opentype');
+}
+
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 300;
+    src: url("fonts/Raleway-Thin.otf") format('opentype');
 }

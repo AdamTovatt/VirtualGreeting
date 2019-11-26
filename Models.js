@@ -5,8 +5,10 @@ class GreetingData {
 }
 
 class Text {
-    constructor(text, id) {
+    constructor(text, id, fontId, fontVariationId) {
         this.text = text;
         this.id = "textfield_" + id;
+        this.fontId = fontId;
+        this.fontVariationId = fontVariationId;
     }
 }

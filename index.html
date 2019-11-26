@@ -5,6 +5,7 @@
     <script type="text/javascript" src="QrCode.js"></script>
     <script type="text/javascript" src="Editor.js"></script>
     <script type="text/javascript" src="View.js"></script>
+    <script type="text/javascript" src="Fonts.js"></script>
     <script type="text/javascript" src="CookieManager.js"></script>
     <script type="text/javascript" src="Models.js"></script>
     <link rel="stylesheet" href="Fonts.css">
@@ -94,12 +95,10 @@
         display_edit.style.display = "block";
         display_start.style.display = "none";
         document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
-
-        //displayQrCode();
     }
 
     function AddText() {
-        currentEditor.greetingData.texts.push(new Text("new text", currentEditor.greetingData.texts.length));
+        currentEditor.greetingData.texts.push(new Text("new text", currentEditor.greetingData.texts.length, 1, 1));
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
     }
 

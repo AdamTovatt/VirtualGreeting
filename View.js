@@ -21,11 +21,11 @@ class View {
     }
 
     static textGetHtml(text, editor) {
-            if (editor) {
-                return '<p><textarea id="' + text.id + '" cols="40" rows="5">' + text.text + '</textarea></p>';
-            }
-            else {
-                return '<p>' + text.text + '</p>';
-            }
+        if (editor) {
+            return '<div contentEditable="true" id="' + text.id + '"class="textAreaEdit" onclick="console.log(\'' + text.id + '\')">' + text.text + '</div>';
+        }
+        else {
+            return '<div contentEditable="true" id="' + text.id + '"class="textAreaView">' + text.text + '</div>';
+        }
     }
 }

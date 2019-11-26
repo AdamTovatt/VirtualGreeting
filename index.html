@@ -38,7 +38,7 @@
         <div id="editViewArea" class="editViewArea"></div>
     </div>
     <div id="view" class="mainContainer"></div>
-    <div id="qrCode" class="mainContainer"></div>
+    <div id="qrModal" class="modal"><div id="qrCode" class="qrCodeBorder"></div></div>
 </body>
 </html>
 <script>
@@ -50,6 +50,7 @@
     var display_view = document.getElementById("view");
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
+    var display_qrModal = document.getElementById("qrModal");
 
     var currentEditor = null;
 
@@ -61,7 +62,7 @@
             if (urlParams.get("mode") == "view") {
                 document.body.style.background = "rgb(255, 255, 255)"
                 var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
-                console.log("re3sponse: "+ JSON.stringify(response));
+                console.log("re3sponse: " + JSON.stringify(response));
                 display_view.style.display = "block";
                 display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
                 document.body.style.background = "linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%)";
@@ -75,6 +76,12 @@
         }
         else {
             displayStart();
+        }
+
+        window.onclick = function (event) {
+            if (event.target != display_qrModal) {
+                display_qrModal.style.display = "none";
+            }
         }
     }
 
@@ -98,8 +105,8 @@
 
     async function SaveCurrentGreeting() {
         for (var i = 0; i < currentEditor.greetingData.texts.length; i++) {
-            console.log(document.getElementById(currentEditor.greetingData.texts[i].id));
-            currentEditor.greetingData.texts[i].text = document.getElementById(currentEditor.greetingData.texts[i].id).value;
+            console.log(document.getElementById(currentEditor.greetingData.texts[i].id).innerText);
+            currentEditor.greetingData.texts[i].text = document.getElementById(currentEditor.greetingData.texts[i].id).innerHTML;
         }
         await api.UpdateGreetingData(currentEditor.id, currentEditor.editHash, currentEditor.greetingData);
         console.log("saved");
@@ -161,6 +168,7 @@
 
     function displayQrCode() {
         var element = document.getElementById("qrCode");
+        element.innerHTML = "";
         var qrcode = new QRCode(element, {
             text: "https://tottevonboi.github.io/VirtualGreeting/?mode=view&id=" + currentId + "&hash=" + currentViewHash,
             width: 255,
@@ -172,9 +180,11 @@
         var qrelement = element.getElementsByTagName("img")[0];
         qrelement.className = "qrCode";
         setTimeout(function () {
-            element.style.display = "block";
-        }, 200);
+            display_qrModal.style.display = "block";
+            element.style.display = "inline-block";
+        }, 100);
     }
+
 
     Main(new URLSearchParams(window.location.search));
 </script>

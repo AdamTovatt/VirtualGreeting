@@ -151,6 +151,7 @@
     max-width: 60%;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 300;
 }
 
 .editViewArea {
@@ -194,6 +195,13 @@
 
 ::-ms-input-placeholder {
     color: var(--green-mid);
+}
+
+td {
+    padding-right: 10px;
+    padding-left: 5px;
+    font-weight: inherit;
+    font-size: inherit;
 }
 
 div {

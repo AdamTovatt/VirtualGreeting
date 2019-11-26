@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <script type="text/javascript" src="Api.js"></script>
-    <script type="text/javascript" src="QrCode.js"></script>
-    <script type="text/javascript" src="Editor.js"></script>
-    <script type="text/javascript" src="View.js"></script>
-    <script type="text/javascript" src="Fonts.js"></script>
-    <script type="text/javascript" src="CookieManager.js"></script>
-    <script type="text/javascript" src="Models.js"></script>
+    <script type="text/javascript" src="javascript/Api.js"></script>
+    <script type="text/javascript" src="javascript/QrCode.js"></script>
+    <script type="text/javascript" src="javascript/Editor.js"></script>
+    <script type="text/javascript" src="javascript/View.js"></script>
+    <script type="text/javascript" src="javascript/Fonts.js"></script>
+    <script type="text/javascript" src="javascript/CookieManager.js"></script>
+    <script type="text/javascript" src="javascript/Models.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
     <meta charset="UTF-8">
@@ -185,6 +185,9 @@
         document.getElementById('editToolPanel').style.display = 'none';
         document.getElementById('editTextPanel').style.display = 'block';
 
+        if (event.target != display_qrModal) { //för att stänga qr även om man klickar på en textarea
+            display_qrModal.style.display = "none";
+        }
         window.onclick = function (event) {
             if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION") {
                 DeselectText(id);

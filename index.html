@@ -19,6 +19,7 @@
         <button class="plusButton" onclick="CreateNewGreeting()">+</button>
     </div>
     <div id="edit" class="mainContainer">
+        <div id="headlineInput" contenteditable="true" class="headlineInput">New Greeting</div>
         <div id="editToolPanel" class="editToolPanel">
             <table>
                 <tr>
@@ -36,6 +37,21 @@
                     <td>font:</td>
                     <td><select title="click to change" class="select-css" id="fontSelect" onchange="FontSelected()"></select></td>
                     <td><select title="click to change" class="select-css" id="fontVariationSelect" onchange="FontVariationSelected()"></select></td>
+                    <!--<td>
+                        <div style="float: left">
+                            size:
+                        </div>
+                        <div style="float: right">
+                            <div style="float: left">
+                                3
+                            </div>
+                            <div style="float:right">
+                                <button>+</button>
+                                <br />
+                                <button>-</button>
+                            </div>
+                        </div>
+                    </td>-->
                 </tr>
             </table>
         </div>
@@ -70,10 +86,10 @@
             if (urlParams.get("mode") == "view") {
                 document.body.style.background = "rgb(255, 255, 255)"
                 var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
-                console.log("re3sponse: " + JSON.stringify(response));
                 display_view.style.display = "block";
                 display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
                 document.body.style.background = "linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%)";
+                document.title = response["greetingdata"].title;
             }
             else if (urlParams.get("mode") == "edit") {
                 OpenEditor(Editor.create(api, currentId, currentViewHash))
@@ -98,17 +114,28 @@
                 }
             }
         }
+
+        //gör så man inte kan trycka på enter i titeln
+        document.getElementById("headlineInput").addEventListener("keydown", (evt) => {
+            if (evt.keyCode === 13) {
+                document.execCommand('insertHTML', false, '<br>');
+                // prevent the default behaviour of return key pressed
+                evt.preventDefault();
+            }
+        });
     }
 
     function OpenEditor(editor) {
-        console.log(JSON.stringify(editor.greetingData));
         currentEditor = editor;
         currentViewHash = editor.viewHash;
         currentId = editor.id;
         currentEditHash = editor.editHash;
         display_edit.style.display = "block";
         display_start.style.display = "none";
+        document.getElementById("headlineInput").innerHTML = editor.greetingData.title;
         document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
+        View.SetEvents(editor.greetingData);
+        document.title = editor.greetingData.title + " (editing)";
     }
 
     function FontSelected() {
@@ -139,11 +166,11 @@
     }
 
     function ApplyFont(font, variation) {
-        console.log("font: " + font + " variation: " + variation);
         var text = currentEditor.GetText(currentSelectedObject.id);
         text.fontId = font;
         text.fontVariationId = variation;
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -151,6 +178,7 @@
         var text = new Text("new text", currentEditor.greetingData.texts.length, 1, 1);
         currentEditor.greetingData.texts.push(text);
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        View.SetEvents(currentEditor.greetingData);
         SelectText(text.id);
     }
 
@@ -206,14 +234,22 @@
         for (var i = 0; i < currentEditor.greetingData.texts.length; i++) {
             currentEditor.greetingData.texts[i].text = document.getElementById(currentEditor.greetingData.texts[i].id).innerHTML;
         }
+        currentEditor.greetingData.title = document.getElementById("headlineInput").innerText;
         await api.UpdateGreetingData(currentEditor.id, currentEditor.editHash, currentEditor.greetingData);
-        console.log("saved");
+        previousGreetings = JSON.parse(Cookie.getCookie("previousGreetings"));
+        for (var i = 0; i < previousGreetings.greetings.length; i++) {
+            if (previousGreetings.greetings[i].id == currentEditor.id) {
+                previousGreetings.greetings[i].title = currentEditor.greetingData.title;
+                break;
+            }
+        }
+        Cookie.setCookie("previousGreetings", JSON.stringify(previousGreetings), 900);
     }
 
     async function CreateNewGreeting() {
         var response = JSON.parse(await api.Init());
-        response.title = "New Greeting";
         response.created = Date.now();
+        response.title = "New Greeting";
         var previousGreetings = null;
 
         try {
@@ -223,13 +259,13 @@
         }
 
         if (previousGreetings) {
-            previousGreetings.greetings.push(response); console.log("added item to existing cookie");
+            previousGreetings.greetings.push(response);
         }
         else {
-            previousGreetings = { greetings: [response] }; console.log("added new cookiue: " + JSON.stringify(previousGreetings));
+            previousGreetings = { greetings: [response] };
         }
         Cookie.setCookie("previousGreetings", JSON.stringify(previousGreetings), 900);
-        OpenEditor(await Editor.create(api, response["id"], response["editorHash"], response["hash"], response["title"], response["createddate"]));
+        OpenEditor(await Editor.create(api, response["id"], response["editorHash"], response["hash"], response["createddate"]));
     }
 
     function ShowTools() {
@@ -263,13 +299,14 @@
         }
 
         display_start.style.display = "block";
+        document.title = "Virtual Greeting";
     }
 
     async function EditButton(id, hash) {
         OpenEditor(await Editor.create(api, id, hash));
     }
 
-    function displayQrCode() {
+    async function displayQrCode() {
         var element = document.getElementById("qrCode");
         element.innerHTML = "";
         var qrcode = new QRCode(element, {
@@ -291,6 +328,7 @@
                 }
             }
         }, 100);
+        await SaveCurrentGreeting();
     }
 
 

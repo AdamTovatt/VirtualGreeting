@@ -1,9 +1,8 @@
 class Editor {
-    constructor(api, id, editHash, title = null, viewHash = null, created = null) {
+    constructor(api, id, editHash, viewHash = null, created = null) {
         this.id = id;
         this.editHash = editHash;
         this.viewHash = viewHash;
-        this.title = title;
         this.created = created;
         this.api = api;
         if (created == null)
@@ -15,14 +14,16 @@ class Editor {
         var data = JSON.parse(await api.GetGreetingData(this.id, this.editHash));
         this.viewHash = data["hash"];
         this.created = data["created"];
-        this.title = data["title"];
         this.greetingData = data["greetingdata"];
         if (!this.greetingData)
             this.greetingData = new GreetingData();
+        if (!this.greetingData.title) {
+            this.greetingData.title = "New Greeting";
+        }
     }
 
-    static async create(api, id, editHash, title, viewHash = null, created = null) {
-        var o = new Editor(api, id, editHash, title, viewHash = null, created);
+    static async create(api, id, editHash, viewHash = null, created = null) {
+        var o = new Editor(api, id, editHash, viewHash = null, created);
         if (viewHash == null || greetingData == null) {
             await o.initialize();
         }

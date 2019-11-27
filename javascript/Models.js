@@ -1,6 +1,7 @@
 class GreetingData {
     constructor() {
         this.texts = [];
+        this.title = "New Greeting";
     }
 }
 

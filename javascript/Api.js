@@ -23,9 +23,9 @@ class Api {
             }
             else {
                 xhr.send();
-            }       
+            }
         });
-    }   
+    }
 
     async Init() {
         var path = "greeting/init";
@@ -39,6 +39,10 @@ class Api {
 
     async UpdateGreetingData(id, hash, data) {
         var path = "greeting/update/?id=" + id + "&hash=" + hash;
+        if (data.texts)
+            for (var i = 0; i < data.texts.length; i++) {
+                data.texts[i].text = data.texts[i].text.replace("<div>", "").replace("</div>", "");
+            }
         return await this.GetResponse("POST", path, { greetingdata: data });
     }
 }

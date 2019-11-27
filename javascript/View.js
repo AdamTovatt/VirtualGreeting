@@ -4,8 +4,6 @@ class View {
 
         var fonts = new Fonts();
 
-        console.log(greeting);
-
         if (greeting) {
             if (greeting.background) {
 
@@ -30,6 +28,19 @@ class View {
         }
         else {
             return '<div contentEditable="false" ' + fontText + ' id="' + text.id + '"class="textAreaView">' + text.text + '</div>';
+        }
+    }
+
+    static SetEvents(greeting) {
+        if (greeting.texts) {
+            for (var i = 0; i < greeting.texts.length; i++) {
+                document.getElementById(greeting.texts[i].id).addEventListener("keydown", (evt) => {
+                    if (evt.keyCode === 13) {
+                        document.execCommand('insertHTML', false, '<br>');
+                        evt.preventDefault();
+                    }
+                });
+            }
         }
     }
 }

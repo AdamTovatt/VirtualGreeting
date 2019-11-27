@@ -11,5 +11,6 @@ class Text {
         this.id = "textfield_" + id;
         this.fontId = fontId;
         this.fontVariationId = fontVariationId;
+        this.fontSize = 1;
     }
 }

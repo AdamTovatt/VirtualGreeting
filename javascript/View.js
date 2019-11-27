@@ -21,7 +21,7 @@ class View {
     static textGetHtml(text, editor, fonts) {
         var fontText = 'style="font-family:DroidSerif;font-weight:500"';
         if (text.fontId && text.fontVariationId) {
-            fontText = fonts.GetFont(text.fontId, text.fontVariationId);
+            fontText = fonts.GetFont(text.fontId, text.fontVariationId, text.fontSize);
         }
         if (editor) {
             return '<div contentEditable="true" ' + fontText + ' id="' + text.id + '"class="textAreaEdit" onclick="SelectText(\'' + text.id + '\')">' + text.text + '</div>';

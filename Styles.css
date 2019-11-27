@@ -138,6 +138,17 @@
     transform: translate(-50%);
 }
 
+.upDownButtons {
+    height: 15px;
+    width: 15px;
+    font-size: 0.4em;
+    font-family: Quicksand;
+    font-weight: 900;
+    background-color: transparent;
+    border: 0px solid rgb(0, 0, 0);
+    color: var(--white-lightest-text);
+}
+
 .qrCode {
     border-radius: 10px;
     border: 7px solid rgb(255, 255, 255);

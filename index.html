@@ -37,21 +37,21 @@
                     <td>font:</td>
                     <td><select title="click to change" class="select-css" id="fontSelect" onchange="FontSelected()"></select></td>
                     <td><select title="click to change" class="select-css" id="fontVariationSelect" onchange="FontVariationSelected()"></select></td>
-                    <!--<td>
-                        <div style="float: left">
+                    <td>
+                        <div style="float: left; font-weight: 300; font-size: 90%; vertical-align: middle">
                             size:
                         </div>
                         <div style="float: right">
-                            <div style="float: left">
-                                3
+                            <div id="currentFontSize" style="float: left; padding-left: 2px; font-size: 75%">
+                                1.0
                             </div>
-                            <div style="float:right">
-                                <button>+</button>
+                            <div style="float:right; display: grid">
+                                <button class="upDownButtons" style="display: inline-block" onclick="FontSizeIncrease()">+</button>
                                 <br />
-                                <button>-</button>
+                                <button class="upDownButtons" style="display: block" onclick="FontSizeDecrease()">-</button>
                             </div>
                         </div>
-                    </td>-->
+                    </td>
                 </tr>
             </table>
         </div>
@@ -71,6 +71,8 @@
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
     var display_qrModal = document.getElementById("qrModal");
+
+    var currentFontSize = document.getElementById("currentFontSize");
 
     var fonts = new Fonts();
 
@@ -136,6 +138,28 @@
         document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
         View.SetEvents(editor.greetingData);
         document.title = editor.greetingData.title + " (editing)";
+    }
+
+    function FontSizeIncrease() {
+        var text = currentEditor.GetText(currentSelectedObject.id);
+        if (!text.fontSize)
+            text.fontSize = 1;
+        text.fontSize += 0.2;
+        currentFontSize.innerHTML = text.fontSize.toFixed(1);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        View.SetEvents(currentEditor.greetingData);
+        SelectText(currentSelectedObject.id);
+    }
+
+    function FontSizeDecrease() {
+        var text = currentEditor.GetText(currentSelectedObject.id);
+        if (!text.fontSize)
+            text.fontSize = 1;
+        text.fontSize -= 0.2;
+        currentFontSize.innerHTML = text.fontSize.toFixed(1);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        View.SetEvents(currentEditor.greetingData);
+        SelectText(currentSelectedObject.id);
     }
 
     function FontSelected() {
@@ -213,11 +237,13 @@
         document.getElementById('editToolPanel').style.display = 'none';
         document.getElementById('editTextPanel').style.display = 'block';
 
+        currentFontSize.innerHTML = text.fontSize.toFixed(1);
+
         if (event.target != display_qrModal) { //f�r att st�nga qr �ven om man klickar p� en textarea
             display_qrModal.style.display = "none";
         }
         window.onclick = function (event) {
-            if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION") {
+            if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION" && event.target.tagName != "BUTTON") {
                 DeselectText(id);
             }
         }

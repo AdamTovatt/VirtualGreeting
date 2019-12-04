@@ -109,6 +109,7 @@
     font-family: Quicksand;
     font-weight: 900;
     resize: none;
+    position: relative;
 }
 
 .textAreaView {
@@ -121,6 +122,7 @@
     font-family: Quicksand;
     font-weight: 900;
     resize: none;
+    position: relative;
 }
 
 .modal {
@@ -148,6 +150,29 @@
     border: 0px solid rgb(0, 0, 0);
     color: var(--white-lightest-text);
 }
+
+.moveIcon {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    /*IE10*/
+    -ms-user-select: none;
+    user-select: none;
+    /*You just need this if you are only concerned with android and not desktop browsers.*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+    .moveIcon::selection {
+        background-color: transparent;
+    }
+
+    .moveIcon::-moz-selection {
+        background-color: transparent;
+    }
 
 .qrCode {
     border-radius: 10px;
@@ -183,6 +208,7 @@
     min-height: 600px;
     border: 1px dashed var(--black--text);
     border-radius: 20px;
+    position: relative;
 }
 
 .textInput {

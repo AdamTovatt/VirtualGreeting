@@ -25,7 +25,10 @@ class View {
         }
 
         if (text.fadeDuration)
-            fontText += "opacity: 0; animation: fadeIn " + text.fadeDuration + "s ease normal; animation-delay: " + text.fadeDelay + "s; animation-fill-mode: forwards;"
+            fontText += "opacity: 0; animation: fadeIn " + text.fadeDuration + "s ease normal; animation-delay: " + text.fadeDelay + "s; animation-fill-mode: forwards;";
+
+        if (text.positionType)
+            fontText += "position: " + text.positionType + "; left: " + text.posX + "%; top: " + text.posY + "px;";
 
         fontText += "\"";
         if (editor) {

@@ -39,4 +39,8 @@ class Editor {
         }
         return null;
     }
+
+    GetMoveIcon() {
+        return '<img id="moveIcon" src="https://cdn4.iconfinder.com/data/icons/vectory-multimedia-1/40/move_4-512.png" class="moveIcon" />';
+    }
 }

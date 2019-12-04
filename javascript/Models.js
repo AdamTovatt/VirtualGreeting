@@ -14,5 +14,8 @@ class Text {
         this.fontSize = 1;
         this.fadeDuration = 1;
         this.fadeDelay = 1;
+        this.positionType = "absolute";
+        this.posX = 50;
+        this.posY = 10;
     }
 }

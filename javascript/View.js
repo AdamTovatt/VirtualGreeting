@@ -19,10 +19,15 @@ class View {
     }
 
     static textGetHtml(text, editor, fonts) {
-        var fontText = 'style="font-family:DroidSerif;font-weight:500"';
+        var fontText = 'style="font-family:DroidSerif;font-weight:500;';
         if (text.fontId && text.fontVariationId) {
             fontText = fonts.GetFont(text.fontId, text.fontVariationId, text.fontSize);
         }
+
+        if (text.fadeDuration)
+            fontText += "opacity: 0; animation: fadeIn " + text.fadeDuration + "s ease normal; animation-delay: " + text.fadeDelay + "s; animation-fill-mode: forwards;"
+
+        fontText += "\"";
         if (editor) {
             return '<div contentEditable="true" ' + fontText + ' id="' + text.id + '"class="textAreaEdit" onclick="SelectText(\'' + text.id + '\')">' + text.text + '</div>';
         }

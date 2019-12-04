@@ -85,7 +85,7 @@ class Fonts {
             if (this.fonts[i].id == id) {
                 for (var j = 0; j < this.fonts[i].variations.length; j++) {
                     if (this.fonts[i].variations[j].id == variationId)
-                        return 'style="font-family:' + this.fonts[i].name + ';font-weight:' + this.fonts[i].variations[j].weight + ';font-style:' + this.fonts[i].variations[j].style + ';font-size:' + size + 'em;"';
+                        return 'style="font-family:' + this.fonts[i].name + ';font-weight:' + this.fonts[i].variations[j].weight + ';font-style:' + this.fonts[i].variations[j].style + ';font-size:' + size + 'em;';
                 }
             }
         }

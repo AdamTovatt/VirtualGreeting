@@ -12,5 +12,7 @@ class Text {
         this.fontId = fontId;
         this.fontVariationId = fontVariationId;
         this.fontSize = 1;
+        this.fadeDuration = 1;
+        this.fadeDelay = 1;
     }
 }

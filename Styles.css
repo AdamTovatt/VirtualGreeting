@@ -210,7 +210,6 @@
     font-weight: 300;
     color: var(--white-lighter-text);
     line-height: 1.1;
-    padding: .3em 0.8em .3em .4em;
     border: 0px solid #aaa;
     border-radius: .5em;
     -moz-appearance: none;
@@ -248,7 +247,7 @@
 }
 
 td {
-    padding-right: 10px;
+    padding-right: 5px;
     padding-left: 5px;
     font-weight: inherit;
     font-size: inherit;
@@ -308,6 +307,36 @@ html {
 }
 
 @-moz-keyframes qrCode {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@-moz-keyframes fadeIn {
     0% {
         opacity: 0;
     }

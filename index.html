@@ -9,8 +9,10 @@
     <script type="text/javascript" src="javascript/TextMove.js"></script>
     <script type="text/javascript" src="javascript/CookieManager.js"></script>
     <script type="text/javascript" src="javascript/Models.js"></script>
+    <script type="text/javascript" src="javascript/color-picker.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="color-picker.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -20,7 +22,7 @@
         <button class="plusButton" onclick="CreateNewGreeting()">+</button>
     </div>
     <div id="edit" class="mainContainer">
-        <div id="headlineInput" contenteditable="true" class="headlineInput">New Greeting</div>
+        <div id="headlineInput" title="click to change title" contenteditable="true" class="headlineInput">New Greeting</div>
         <div id="editToolPanel" class="editToolPanel">
             <table>
                 <tr>
@@ -84,6 +86,7 @@
                         </div>
                     </td>
                     <td><button title="click to add a text to the page" class="toolButton" onclick="RefreshView()">play animations</button></td>
+                    <td><input id="textColorPicker" type="text"></td>
                 </tr>
             </table>
         </div>
@@ -336,9 +339,19 @@
         if (event.target != display_qrModal) { //f�r att st�nga qr �ven om man klickar p� en textarea
             display_qrModal.style.display = "none";
         }
-        console.log("select text");
+
+        var textColorPicker = document.getElementById("textColorPicker");
+        var picker = new CP(textColorPicker);
+        picker.on("drag", function (color) {
+            this.target.value = '#' + color;
+            currentSelectedObject.style.color = '#' + color;
+        });
+        picker.target = textColorPicker;
+
         window.onclick = function (event) {
-            if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION" && event.target.tagName != "BUTTON" && event.target.tagName != "IMG") {
+            if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION" &&
+                event.target.tagName != "BUTTON" && event.target.tagName != "IMG" && event.target.tagName != "INPUT" &&
+                event.target.tagName != "SPAN") {
                 DeselectText(id);
             }
         }

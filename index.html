@@ -180,8 +180,8 @@
             text.fadeDuration = 1;
         text.fadeDuration += 0.2;
         currentFadeDuration.innerHTML = text.fadeDuration.toFixed(1);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        View.SetEvents(currentEditor.greetingData);
+        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -191,8 +191,8 @@
             text.fadeDuration = 1;
         text.fadeDuration -= 0.2;
         currentFadeDuration.innerHTML = text.fadeDuration.toFixed(1);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        View.SetEvents(currentEditor.greetingData);
+        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -203,8 +203,8 @@
             text.fadeDelay = 1;
         text.fadeDelay += 0.2;
         currentFadeDelay.innerHTML = text.fadeDelay.toFixed(1);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        View.SetEvents(currentEditor.greetingData);
+        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -215,8 +215,8 @@
             text.fadeDelay = 1;
         text.fadeDelay -= 0.2;
         currentFadeDelay.innerHTML = text.fadeDelay.toFixed(1);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        View.SetEvents(currentEditor.greetingData);
+        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -226,8 +226,10 @@
             text.fontSize = 1;
         text.fontSize += 0.2;
         currentFontSize.innerHTML = text.fontSize.toFixed(1);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        View.SetEvents(currentEditor.greetingData);
+        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        //View.SetEvents(currentEditor.greetingData);
+        console.log(currentSelectedObject);
+        currentSelectedObject.style.fontSize = text.fontSize;
         SelectText(currentSelectedObject.id);
     }
 

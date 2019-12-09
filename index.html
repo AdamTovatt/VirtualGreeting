@@ -83,6 +83,7 @@
                             </div>
                         </div>
                     </td>
+                    <td><button title="click to add a text to the page" class="toolButton" onclick="RefreshView()">play animations</button></td>
                 </tr>
             </table>
         </div>
@@ -180,8 +181,6 @@
             text.fadeDuration = 1;
         text.fadeDuration += 0.2;
         currentFadeDuration.innerHTML = text.fadeDuration.toFixed(1);
-        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -191,8 +190,6 @@
             text.fadeDuration = 1;
         text.fadeDuration -= 0.2;
         currentFadeDuration.innerHTML = text.fadeDuration.toFixed(1);
-        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -203,8 +200,6 @@
             text.fadeDelay = 1;
         text.fadeDelay += 0.2;
         currentFadeDelay.innerHTML = text.fadeDelay.toFixed(1);
-        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -215,8 +210,6 @@
             text.fadeDelay = 1;
         text.fadeDelay -= 0.2;
         currentFadeDelay.innerHTML = text.fadeDelay.toFixed(1);
-        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        //View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
 
@@ -226,8 +219,7 @@
             text.fontSize = 1;
         text.fontSize += 0.2;
         currentFontSize.innerHTML = text.fontSize.toFixed(1);
-        //document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
-        //View.SetEvents(currentEditor.greetingData);
+        currentSelectedObject.style.fontSize = text.fontSize.toFixed(1) + "em";
         console.log(currentSelectedObject);
         currentSelectedObject.style.fontSize = text.fontSize;
         SelectText(currentSelectedObject.id);
@@ -239,9 +231,13 @@
             text.fontSize = 1;
         text.fontSize -= 0.2;
         currentFontSize.innerHTML = text.fontSize.toFixed(1);
+        currentSelectedObject.style.fontSize = text.fontSize.toFixed(1) + "em";
+        SelectText(currentSelectedObject.id);
+    }
+
+    function RefreshView() {
         document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
         View.SetEvents(currentEditor.greetingData);
-        SelectText(currentSelectedObject.id);
     }
 
     function FontSelected() {
@@ -301,7 +297,7 @@
 
         var moveIcon = document.createElement("img");
         moveIcon.id = "moveIcon";
-        moveIcon.src = "https://cdn4.iconfinder.com/data/icons/vectory-multimedia-1/40/move_4-512.png";
+        moveIcon.src = "moveArrow.png";
         moveIcon.className = "moveIcon";
         moveIcon.draggable = true;
         moveIcon.ondragstart = function () { return false; };

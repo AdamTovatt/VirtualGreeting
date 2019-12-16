@@ -2,6 +2,7 @@ class GreetingData {
     constructor() {
         this.texts = [];
         this.title = "New Greeting";
+        //this.backgroundColor1 = color
     }
 }
 

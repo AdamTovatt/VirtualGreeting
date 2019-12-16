@@ -10,6 +10,7 @@
     <script type="text/javascript" src="javascript/CookieManager.js"></script>
     <script type="text/javascript" src="javascript/Models.js"></script>
     <script type="text/javascript" src="javascript/color-picker.js"></script>
+    <script type="text/javascript" src="javascript/ColorGenerator.js"></script>
     <link rel="stylesheet" href="Fonts.css">
     <link rel="stylesheet" href="Styles.css">
     <link rel="stylesheet" href="color-picker.css">
@@ -164,6 +165,19 @@
                 evt.preventDefault();
             }
         });
+
+        var bgGradientColor = ColorGenerator.GetRandomColor();
+        var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
+        darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
+        var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
+        bgGradientColor2[0] = (bgGradientColor2[0] + 0.5) % 1;
+        console.log(bgGradientColor2);
+        console.log(ColorGenerator.HEX2HSV(bgGradientColor));
+        var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
+        darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
+        var grad = ColorGenerator.GetGradient(bgGradientColor, ColorGenerator.HSV2HEX(darkerBgGradientColor), ColorGenerator.HSV2HEX(bgGradientColor2), ColorGenerator.HSV2HEX(darkerBgGradientColor2));
+        document.body.style.background = grad;
+        console.log(grad);
     }
 
     function OpenEditor(editor) {
@@ -350,10 +364,11 @@
                 this.target.value = '#' + color;
                 currentSelectedObject.style.color = '#' + color;
             });
-            textColorPicker.on("stop", function (color) {
-                text.color = color;
-            });
         }
+
+        textColorPicker.on("stop", function (color) {
+            currentEditor.GetText(currentSelectedObject.id).color = color;
+        });
 
         window.onclick = function (event) {
             if (event.target.id != selectedElement.id && event.target.tagName != "SELECT" && event.target.tagName != "OPTION" &&

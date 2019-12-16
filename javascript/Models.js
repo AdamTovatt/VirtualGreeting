@@ -17,5 +17,6 @@ class Text {
         this.positionType = "absolute";
         this.posX = 50;
         this.posY = 10;
+        this.color = "e7e7e7";
     }
 }

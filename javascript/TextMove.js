@@ -76,7 +76,6 @@ function stopDrag() {
             text.posY = posTop;
         }
     }
-    console.log(text);
 }
 window.onload = function () {
     document.onmousedown = startDrag;

@@ -30,6 +30,11 @@ class View {
         if (text.positionType)
             fontText += "position: " + text.positionType + "; left: " + text.posX + "%; top: " + text.posY + "px;";
 
+        if (!text.color)
+            text.color = "e7e7e7";
+
+        fontText += "color: #" + text.color + ";";
+
         fontText += "\"";
         if (editor) {
             return '<div contentEditable="true" ' + fontText + ' id="' + text.id + '"class="textAreaEdit" onclick="SelectText(\'' + text.id + '\')">' + text.text + '</div>';

@@ -96,7 +96,15 @@
     </div>
     <div id="view" class="mainContainer"></div>
     <div id="qrModal" class="modal"><div id="qrCode" class="qrCodeBorder"></div></div>
-    <div id="backgroundColorModal" class="modal"><div class="backgroundColorModalArea"></div></div>
+    <div id="backgroundColorModal" class="modal">
+        <div id="backgroundColorModalArea" class="backgroundColorModalArea">
+            <div class="sliderContainer">
+                <div style="font-size: 90%">Hue: </div><input type="range" oninput="BackgroundColorSliderValueChanged()" min="1" max="100" value="50" class="slider" id="backgroundColorSliderH">
+                <div style="font-size: 90%">Saturation: </div><input type="range" oninput="BackgroundColorSliderValueChanged()" min="1" max="100" value="50" class="slider" id="backgroundColorSliderS">
+                <div style="font-size: 90%">Brightness: </div><input type="range" oninput="BackgroundColorSliderValueChanged()" min="1" max="100" value="50" class="slider" id="backgroundColorSliderV">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
@@ -110,6 +118,10 @@
     var display_start = document.getElementById("start");
     var display_qrModal = document.getElementById("qrModal");
     var display_backgroundColorModal = document.getElementById("backgroundColorModal");
+
+    var bgSliderH = document.getElementById("backgroundColorSliderH");
+    var bgSliderS = document.getElementById("backgroundColorSliderS");
+    var bgSliderV = document.getElementById("backgroundColorSliderV");
 
     var currentFontSize = document.getElementById("currentFontSize");
     var currentFadeDuration = document.getElementById("currentFadeDuration");
@@ -133,7 +145,7 @@
                 var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
                 display_view.style.display = "block";
                 display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
-                document.body.style.background = "linear-gradient(217deg, rgba(59, 39, 71,.8), rgba(59, 39, 71,.8) 70.71%)";
+                document.body.style.background = GreetingData.GetGradient(response["greetingdata"]);
                 document.title = response["greetingdata"].title;
             }
             else if (urlParams.get("mode") == "edit") {
@@ -182,19 +194,11 @@
         View.SetEvents(editor.greetingData);
         document.title = editor.greetingData.title + " (editing)";
         if (!editor.greetingData.backgroundColor1 || editor.greetingData.backgroundColor2 == null) {
-            var bgGradientColor = ColorGenerator.GetRandomColor();
-            var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
-            darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
-            var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
-            bgGradientColor2[0] = (bgGradientColor2[0] + 0.3) % 1;
-            console.log(bgGradientColor2);
-            console.log(ColorGenerator.HEX2HSV(bgGradientColor));
-            var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
-            darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
-            editor.greetingData.backgroundColor1 = bgGradientColor;
-            editor.greetingData.backgroundColor2 = ColorGenerator.HSV2HEX(darkerBgGradientColor);
-            editor.greetingData.backgroundColor3 = ColorGenerator.HSV2HEX(bgGradientColor2);
-            editor.greetingData.backgroundColor4 = ColorGenerator.HSV2HEX(darkerBgGradientColor2);
+            var colors = GetBackgroundGradientFromColor(ColorGenerator.GetRandomColor());
+            editor.greetingData.backgroundColor1 = colors[0];
+            editor.greetingData.backgroundColor2 = colors[1];
+            editor.greetingData.backgroundColor3 = colors[2];
+            editor.greetingData.backgroundColor4 = colors[3];
             document.body.style.background = GreetingData.GetGradient(editor.greetingData);
             SaveCurrentGreeting();
         }
@@ -207,13 +211,40 @@
         display_backgroundColorModal.style.display = "block";
         setTimeout(function () {
             window.onclick = function (event) {
-                if (event.target != display_qrModal) {
+                if (event.target != document.getElementById("backgroundColorModalArea") && event.target.className != "slider") {
                     display_qrModal.style.display = "none";
                     display_backgroundColorModal.style.display = "none";
                     window.onclick = null;
                 }
             }
         }, 100);
+        var bg1Hsv = ColorGenerator.HEX2HSV(currentEditor.greetingData.backgroundColor1);
+        bgSliderH.valueAsNumber = bg1Hsv[0] * 100;
+        bgSliderS.valueAsNumber = bg1Hsv[1] * 100;
+        bgSliderV.valueAsNumber = bg1Hsv[2] * 100;
+    }
+
+    function BackgroundColorSliderValueChanged() {
+        var h = bgSliderH.valueAsNumber / 100;
+        var s = bgSliderS.valueAsNumber / 100;
+        var v = bgSliderV.valueAsNumber / 100;
+        var colors = GetBackgroundGradientFromColor(ColorGenerator.HSV2HEX([h, s, v]));
+        currentEditor.greetingData.backgroundColor1 = colors[0];
+        currentEditor.greetingData.backgroundColor2 = colors[1];
+        currentEditor.greetingData.backgroundColor3 = colors[2];
+        currentEditor.greetingData.backgroundColor4 = colors[3];
+        document.body.style.background = GreetingData.GetGradient(currentEditor.greetingData);
+        console.log(colors);
+    }
+
+    function GetBackgroundGradientFromColor(bgGradientColor) {
+        var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
+        darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
+        var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
+        bgGradientColor2[0] = (bgGradientColor2[0] + 0.3) % 1;
+        var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
+        darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
+        return [bgGradientColor, ColorGenerator.HSV2HEX(darkerBgGradientColor), ColorGenerator.HSV2HEX(bgGradientColor2), ColorGenerator.HSV2HEX(darkerBgGradientColor2)];
     }
 
     function FadeDurationIncrease() {
@@ -511,7 +542,7 @@
             display_qrModal.style.display = "block";
             element.style.display = "inline-block";
             window.onclick = function (event) {
-                if (event.target != display_qrModal) {
+                if (event.target != document.getElementById("qrCode")) {
                     display_qrModal.style.display = "none";
                     display_backgroundColorModal.style.display = "none";
                     this.window.onclick = null;

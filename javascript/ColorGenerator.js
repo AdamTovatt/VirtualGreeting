@@ -5,6 +5,16 @@ class ColorGenerator {
         return ColorGenerator.RGB2HEX(ColorGenerator.HSV2RGB(hsvArray));
     }
 
+    static GetBackgroundGradientFromColor(bgGradientColor) {
+        var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
+        darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
+        var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
+        bgGradientColor2[0] = (bgGradientColor2[0] + 0.3) % 1;
+        var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
+        darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
+        return [bgGradientColor, ColorGenerator.HSV2HEX(darkerBgGradientColor), ColorGenerator.HSV2HEX(bgGradientColor2), ColorGenerator.HSV2HEX(darkerBgGradientColor2)];
+    }
+
     static GetGradient(color1, color2, color3, color4) {
         return "linear-gradient(217deg, #" + color1 + "d2, #" + color2 + "d2 70.71%)" + ", linear-gradient(127deg, #" + color3 + "d2, #" + color4 + "d2 70.71%)";
     }

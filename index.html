@@ -194,7 +194,7 @@
         View.SetEvents(editor.greetingData);
         document.title = editor.greetingData.title + " (editing)";
         if (!editor.greetingData.backgroundColor1 || editor.greetingData.backgroundColor2 == null) {
-            var colors = GetBackgroundGradientFromColor(ColorGenerator.GetRandomColor());
+            var colors = ColorGenerator.GetBackgroundGradientFromColor(ColorGenerator.GetRandomColor());
             editor.greetingData.backgroundColor1 = colors[0];
             editor.greetingData.backgroundColor2 = colors[1];
             editor.greetingData.backgroundColor3 = colors[2];
@@ -228,23 +228,13 @@
         var h = bgSliderH.valueAsNumber / 100;
         var s = bgSliderS.valueAsNumber / 100;
         var v = bgSliderV.valueAsNumber / 100;
-        var colors = GetBackgroundGradientFromColor(ColorGenerator.HSV2HEX([h, s, v]));
+        var colors = ColorGenerator.GetBackgroundGradientFromColor(ColorGenerator.HSV2HEX([h, s, v]));
         currentEditor.greetingData.backgroundColor1 = colors[0];
         currentEditor.greetingData.backgroundColor2 = colors[1];
         currentEditor.greetingData.backgroundColor3 = colors[2];
         currentEditor.greetingData.backgroundColor4 = colors[3];
         document.body.style.background = GreetingData.GetGradient(currentEditor.greetingData);
         console.log(colors);
-    }
-
-    function GetBackgroundGradientFromColor(bgGradientColor) {
-        var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
-        darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
-        var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
-        bgGradientColor2[0] = (bgGradientColor2[0] + 0.3) % 1;
-        var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
-        darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
-        return [bgGradientColor, ColorGenerator.HSV2HEX(darkerBgGradientColor), ColorGenerator.HSV2HEX(bgGradientColor2), ColorGenerator.HSV2HEX(darkerBgGradientColor2)];
     }
 
     function FadeDurationIncrease() {

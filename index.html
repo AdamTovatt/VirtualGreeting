@@ -31,6 +31,7 @@
                     <td><button title="click to save the page" class="toolButton" onclick="SaveCurrentGreeting()">save</button></td>
                     <td><button title="click to view the page" class="toolButton" onclick="displayQrCode()">preview</button></td>
                     <td><button title="click to add a text to the page" class="toolButton" onclick="AddText()">add text</button></td>
+                    <td><button title="click to change the background color of the page" class="toolButton" onclick="OpenBackgroundColorModal()">set color</button></td>
                 </tr>
             </table>
         </div>
@@ -95,6 +96,7 @@
     </div>
     <div id="view" class="mainContainer"></div>
     <div id="qrModal" class="modal"><div id="qrCode" class="qrCodeBorder"></div></div>
+    <div id="backgroundColorModal" class="modal"><div class="backgroundColorModalArea"></div></div>
 </body>
 </html>
 <script>
@@ -107,6 +109,7 @@
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
     var display_qrModal = document.getElementById("qrModal");
+    var display_backgroundColorModal = document.getElementById("backgroundColorModal");
 
     var currentFontSize = document.getElementById("currentFontSize");
     var currentFadeDuration = document.getElementById("currentFadeDuration");
@@ -165,19 +168,6 @@
                 evt.preventDefault();
             }
         });
-
-        var bgGradientColor = ColorGenerator.GetRandomColor();
-        var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
-        darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
-        var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
-        bgGradientColor2[0] = (bgGradientColor2[0] + 0.5) % 1;
-        console.log(bgGradientColor2);
-        console.log(ColorGenerator.HEX2HSV(bgGradientColor));
-        var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
-        darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
-        var grad = ColorGenerator.GetGradient(bgGradientColor, ColorGenerator.HSV2HEX(darkerBgGradientColor), ColorGenerator.HSV2HEX(bgGradientColor2), ColorGenerator.HSV2HEX(darkerBgGradientColor2));
-        document.body.style.background = grad;
-        console.log(grad);
     }
 
     function OpenEditor(editor) {
@@ -191,6 +181,39 @@
         document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
         View.SetEvents(editor.greetingData);
         document.title = editor.greetingData.title + " (editing)";
+        if (!editor.greetingData.backgroundColor1 || editor.greetingData.backgroundColor2 == null) {
+            var bgGradientColor = ColorGenerator.GetRandomColor();
+            var darkerBgGradientColor = ColorGenerator.HEX2HSV(bgGradientColor);
+            darkerBgGradientColor[2] = darkerBgGradientColor[2] - 0.1;
+            var bgGradientColor2 = ColorGenerator.HEX2HSV(bgGradientColor);
+            bgGradientColor2[0] = (bgGradientColor2[0] + 0.3) % 1;
+            console.log(bgGradientColor2);
+            console.log(ColorGenerator.HEX2HSV(bgGradientColor));
+            var darkerBgGradientColor2 = ColorGenerator.HEX2HSV(ColorGenerator.HSV2HEX(bgGradientColor2));
+            darkerBgGradientColor2[2] = darkerBgGradientColor2[2] - 0.1;
+            editor.greetingData.backgroundColor1 = bgGradientColor;
+            editor.greetingData.backgroundColor2 = ColorGenerator.HSV2HEX(darkerBgGradientColor);
+            editor.greetingData.backgroundColor3 = ColorGenerator.HSV2HEX(bgGradientColor2);
+            editor.greetingData.backgroundColor4 = ColorGenerator.HSV2HEX(darkerBgGradientColor2);
+            document.body.style.background = GreetingData.GetGradient(editor.greetingData);
+            SaveCurrentGreeting();
+        }
+        else {
+            document.body.style.background = GreetingData.GetGradient(editor.greetingData);
+        }
+    }
+
+    function OpenBackgroundColorModal() {
+        display_backgroundColorModal.style.display = "block";
+        setTimeout(function () {
+            window.onclick = function (event) {
+                if (event.target != display_qrModal) {
+                    display_qrModal.style.display = "none";
+                    display_backgroundColorModal.style.display = "none";
+                    window.onclick = null;
+                }
+            }
+        }, 100);
     }
 
     function FadeDurationIncrease() {
@@ -356,6 +379,10 @@
             display_qrModal.style.display = "none";
         }
 
+        if (event.target != display_backgroundColorModal) {
+            display_backgroundColorModal.style.display = "none";
+        }
+
         var _textColorPicker = document.getElementById("textColorPicker");
         if (textColorPicker == null) {
             textColorPicker = new CP(_textColorPicker);
@@ -486,12 +513,13 @@
             window.onclick = function (event) {
                 if (event.target != display_qrModal) {
                     display_qrModal.style.display = "none";
+                    display_backgroundColorModal.style.display = "none";
+                    this.window.onclick = null;
                 }
             }
         }, 100);
         await SaveCurrentGreeting();
     }
-
 
     Main(new URLSearchParams(window.location.search));
 </script>

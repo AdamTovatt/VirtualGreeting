@@ -2,7 +2,14 @@ class GreetingData {
     constructor() {
         this.texts = [];
         this.title = "New Greeting";
-        //this.backgroundColor1 = color
+        this.backgroundColor1 = null;
+        this.backgroundColor2 = null;
+        this.backgroundColor3 = null;
+        this.backgroundColor4 = null;
+    }
+
+    static GetGradient(greetingData) {
+        return ColorGenerator.GetGradient(greetingData.backgroundColor1, greetingData.backgroundColor2, greetingData.backgroundColor3, greetingData.backgroundColor4);
     }
 }
 

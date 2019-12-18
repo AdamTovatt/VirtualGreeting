@@ -1,20 +1,52 @@
 class View {
-    static GetHtml(greeting, editor, animate = true) {
+    static GetHtml(greeting, editor, animate = true, timeDependant = true) {
         var result = "";
 
         var fonts = new Fonts();
 
         if (greeting) {
-            if (greeting.background) {
-
-            }
             if (greeting.texts) {
                 for (var i = 0; i < greeting.texts.length; i++) {
-                    result += this.textGetHtml(greeting.texts[i], editor, fonts, animate);
+                    var text = greeting.texts[i];
+                    var draw = true;
+
+                    if (timeDependant && text.start && text.end) {
+                        var s = Date.parse(text.start);
+                        var e = Date.parse(text.end);
+                        var n = Date.now();
+
+                        if (isNaN(e) || isNaN(s) || n > e || s > n)
+                            draw = false;
+                    }
+
+                    if (draw)
+                        result += this.textGetHtml(text, editor, fonts, animate);
                 }
             }
         }
 
+        return result;
+    }
+
+    static GetTimeTable(greeting) {
+        var result = [true];
+        if (greeting.texts) {
+            for (var i = 0; i < greeting.texts.length; i++) {
+                var text = greeting.texts[i];
+                var draw = true;
+
+                if (text.start && text.end) {
+                    var s = Date.parse(text.start);
+                    var e = Date.parse(text.end);
+                    var n = Date.now();
+
+                    if (isNaN(e) || isNaN(s) || n > e || s > n)
+                        draw = false;
+                }
+
+                result.push(draw);
+            }
+        }
         return result;
     }
 

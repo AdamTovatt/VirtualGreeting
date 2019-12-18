@@ -120,14 +120,17 @@
         <div id="timeModal" class="modal">
             <div id="timeModalArea" class="timeModalArea">
                 <div class="sliderContainer" style="margin-right: auto; margin-left: auto">
+                    <div style="font-size: 40%">Please use the date format yyyy-mm-dd</div>
                     <div class="timeModalElement">Enter start date:</div>
-                    <div  id="startDateInput" contenteditable="true" class="timeTextBox"></div>
+                    <div id="startDateInput" contenteditable="true" class="timeTextBox"></div>
                     <div class="timeModalElement">Enter end date:</div>
-                    <div  id="endDateInput" contenteditable="true" class="timeTextBox"></div>
+                    <div id="endDateInput" contenteditable="true" class="timeTextBox"></div>
+                    <div style="font-size: 40%; margin-top: 10px">Please use the time format hh:mm</div>
                     <div class="timeModalElement">Enter start time:</div>
-                    <div  id="startTimeInput" contenteditable="true" class="timeTextBox"></div>
-                    <div class="timeModalElement">Enter end date:</div>
-                    <div  id="endTimeInput"contenteditable="true" class="timeTextBox"></div>
+                    <div id="startTimeInput" contenteditable="true" class="timeTextBox"></div>
+                    <div class="timeModalElement">Enter end time:</div>
+                    <div id="endTimeInput" contenteditable="true" class="timeTextBox"></div>
+                    <button title="click to apply the date changes" class="toolButton" onclick="ApplyCurrentTimeSettings()">apply</button>
                 </div>
             </div>
         </div>
@@ -164,6 +167,9 @@
 
     var currentEditor = null;
 
+    var lastTimeTable = null;
+    var currentGreetingData = null;
+
     async function Main(urlParams) {
         if (urlParams.get("mode") && urlParams.get("id") && urlParams.get("hash")) {
             currentViewHash = urlParams.get("hash");
@@ -176,6 +182,9 @@
                 display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
                 document.body.style.background = GreetingData.GetGradient(response["greetingdata"]);
                 document.title = response["greetingdata"].title;
+                lastTimeTable = View.GetTimeTable(response["greetingdata"]);
+                currentGreetingData = response["greetingdata"];
+                checkTimeTable();
             }
             else if (urlParams.get("mode") == "edit") {
                 OpenEditor(Editor.create(api, currentId, currentViewHash))
@@ -220,7 +229,7 @@
         display_edit.style.display = "block";
         display_start.style.display = "none";
         document.getElementById("headlineInput").innerHTML = editor.greetingData.title;
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(editor.greetingData, true, true, false);
         View.SetEvents(editor.greetingData);
         document.title = editor.greetingData.title + " (editing)";
         if (!editor.greetingData.backgroundColor1 || editor.greetingData.backgroundColor2 == null) {
@@ -235,6 +244,26 @@
         else {
             document.body.style.background = GreetingData.GetGradient(editor.greetingData);
         }
+    }
+
+    function checkTimeTable() {
+        var currentTimeTable = View.GetTimeTable(currentGreetingData);
+
+        var d = currentTimeTable.length != lastTimeTable.length;
+        for (var i = 0; i < currentTimeTable.length; i++) {
+            if (currentTimeTable[i] != lastTimeTable[i]) {
+                d = true;
+                break;
+            }
+        }
+
+        if (d) {
+            display_view.innerHTML = View.GetHtml(currentGreetingData, false);
+        }
+
+        lastTimeTable = currentTimeTable;
+
+        setTimeout(checkTimeTable, 60000);
     }
 
     function OpenTimeModal() {
@@ -267,6 +296,28 @@
         bgSliderH.valueAsNumber = bg1Hsv[0] * 100;
         bgSliderS.valueAsNumber = bg1Hsv[1] * 100;
         bgSliderV.valueAsNumber = bg1Hsv[2] * 100;
+    }
+
+    function ApplyCurrentTimeSettings() {
+        var start = document.getElementById("startDateInput").innerText.trim() + "T" + document.getElementById("startTimeInput").innerText.trim();
+        var end = document.getElementById("endDateInput").innerText.trim() + "T" + document.getElementById("endTimeInput").innerText.trim();
+        console.log(start + "#" + end);
+        var startDate = Date.parse(start);
+        var endDate = Date.parse(end);
+        var startDateValid = !isNaN(startDate);
+        var endDateValid = !isNaN(endDate);
+
+        if (startDateValid && endDateValid) {
+            //giltiga datum
+            currentEditor.GetText(currentSelectedObject.id).start = start;
+            currentEditor.GetText(currentSelectedObject.id).end = end;
+            display_timeModal.style.display = "none";
+            SelectText(currentSelectedObject.id);
+        }
+        else {
+            //ogiltiga datum
+            alert("Formatting error in a date or time");
+        }
     }
 
     function BackgroundColorSliderValueChanged() {
@@ -344,7 +395,7 @@
     }
 
     function RefreshView() {
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, true, false);
         View.SetEvents(currentEditor.greetingData);
     }
 
@@ -380,7 +431,7 @@
         var text = currentEditor.GetText(currentSelectedObject.id);
         text.fontId = font;
         text.fontVariationId = variation;
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false, false);
         View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
@@ -388,7 +439,7 @@
     function AddText() {
         var text = new Text("new text", currentEditor.greetingData.texts.length, 1, 1);
         currentEditor.greetingData.texts.push(text);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false, false);
         View.SetEvents(currentEditor.greetingData);
         SelectText(text.id);
     }

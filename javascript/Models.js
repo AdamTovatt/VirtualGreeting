@@ -6,6 +6,8 @@ class GreetingData {
         this.backgroundColor2 = null;
         this.backgroundColor3 = null;
         this.backgroundColor4 = null;
+        this.start = null;
+        this.end = null;
     }
 
     static GetGradient(greetingData) {

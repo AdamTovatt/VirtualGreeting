@@ -1,5 +1,5 @@
 class View {
-    static GetHtml(greeting, editor) {
+    static GetHtml(greeting, editor, animate = true) {
         var result = "";
 
         var fonts = new Fonts();
@@ -10,7 +10,7 @@ class View {
             }
             if (greeting.texts) {
                 for (var i = 0; i < greeting.texts.length; i++) {
-                    result += this.textGetHtml(greeting.texts[i], editor, fonts);
+                    result += this.textGetHtml(greeting.texts[i], editor, fonts, animate);
                 }
             }
         }
@@ -18,13 +18,13 @@ class View {
         return result;
     }
 
-    static textGetHtml(text, editor, fonts) {
+    static textGetHtml(text, editor, fonts, animate = true) {
         var fontText = 'style="font-family:DroidSerif;font-weight:500;';
         if (text.fontId && text.fontVariationId) {
             fontText = fonts.GetFont(text.fontId, text.fontVariationId, text.fontSize);
         }
 
-        if (text.fadeDuration)
+        if (text.fadeDuration && animate)
             fontText += "opacity: 0; animation: fadeIn " + text.fadeDuration + "s ease normal; animation-delay: " + text.fadeDelay + "s; animation-fill-mode: forwards;";
 
         if (text.positionType)

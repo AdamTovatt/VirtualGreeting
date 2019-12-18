@@ -98,6 +98,7 @@
                         </div>
                     </td>
                     <td><button title="click to add a text to the page" class="toolButton" onclick="RefreshView()">play animations</button></td>
+                    <td><button title="click to set when this text should be active" class="toolButton" onclick="OpenTimeModal()">time</button></td>
                     <td><div style="font-size: 75%">Color:</div><input class="colorPickerTextArea" id="textColorPicker" type="text"></td>
                 </tr>
             </table>
@@ -115,6 +116,22 @@
             </div>
         </div>
     </div>
+    <div id="timeModalContainer">
+        <div id="timeModal" class="modal">
+            <div id="timeModalArea" class="timeModalArea">
+                <div class="sliderContainer" style="margin-right: auto; margin-left: auto">
+                    <div class="timeModalElement">Enter start date:</div>
+                    <div  id="startDateInput" contenteditable="true" class="timeTextBox"></div>
+                    <div class="timeModalElement">Enter end date:</div>
+                    <div  id="endDateInput" contenteditable="true" class="timeTextBox"></div>
+                    <div class="timeModalElement">Enter start time:</div>
+                    <div  id="startTimeInput" contenteditable="true" class="timeTextBox"></div>
+                    <div class="timeModalElement">Enter end date:</div>
+                    <div  id="endTimeInput"contenteditable="true" class="timeTextBox"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
@@ -123,6 +140,7 @@
     var currentEditHash = null;
     var api = new Api();
 
+    var display_timeModal = document.getElementById("timeModal");
     var display_loading = document.getElementById("loading");
     var display_view = document.getElementById("view");
     var display_edit = document.getElementById("edit");
@@ -219,6 +237,20 @@
         }
     }
 
+    function OpenTimeModal() {
+        display_timeModal.style.display = "block";
+        setTimeout(function () {
+            window.onclick = function (event) {
+                if (event.target == display_edit) {
+                    display_qrModal.style.display = "none";
+                    display_backgroundColorModal.style.display = "none";
+                    display_timeModal.style.display = "none";
+                    window.onclick = null;
+                }
+            }
+        }, 100);
+    }
+
     function OpenBackgroundColorModal() {
         display_backgroundColorModal.style.display = "block";
         setTimeout(function () {
@@ -226,6 +258,7 @@
                 if (event.target != document.getElementById("backgroundColorModalArea") && event.target.className != "slider") {
                     display_qrModal.style.display = "none";
                     display_backgroundColorModal.style.display = "none";
+                    display_timeModal.style.display = "none";
                     window.onclick = null;
                 }
             }
@@ -347,7 +380,7 @@
         var text = currentEditor.GetText(currentSelectedObject.id);
         text.fontId = font;
         text.fontVariationId = variation;
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false);
         View.SetEvents(currentEditor.greetingData);
         SelectText(currentSelectedObject.id);
     }
@@ -355,7 +388,7 @@
     function AddText() {
         var text = new Text("new text", currentEditor.greetingData.texts.length, 1, 1);
         currentEditor.greetingData.texts.push(text);
-        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true);
+        document.getElementById("editViewArea").innerHTML = View.GetHtml(currentEditor.greetingData, true, false);
         View.SetEvents(currentEditor.greetingData);
         SelectText(text.id);
     }
@@ -551,6 +584,7 @@
                 if (event.target != document.getElementById("qrCode")) {
                     display_qrModal.style.display = "none";
                     display_backgroundColorModal.style.display = "none";
+                    display_timeModal.style.display = "none";
                     this.window.onclick = null;
                 }
             }

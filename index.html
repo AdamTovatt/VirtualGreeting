@@ -18,6 +18,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+    <div id="loading" class="mainContainer">
+        <div style="position: fixed;left: calc(50% - 50px); top: calc(50% - 50px);">
+            <div style="position: absolute; left: 0px; top: 0px;">
+                <div class="lds-dual-ring"></div>
+            </div>
+            <div style="position: absolute; left: 15px; top: 13px;">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </div>
     <div id="start" class="mainContainer">
         <div id="startTableContainer" class="tableContainer"></div>
         <button class="plusButton" onclick="CreateNewGreeting()">+</button>
@@ -113,6 +123,7 @@
     var currentEditHash = null;
     var api = new Api();
 
+    var display_loading = document.getElementById("loading");
     var display_view = document.getElementById("view");
     var display_edit = document.getElementById("edit");
     var display_start = document.getElementById("start");
@@ -141,15 +152,16 @@
             currentId = urlParams.get("id");
 
             if (urlParams.get("mode") == "view") {
-                document.body.style.background = "rgb(255, 255, 255)"
                 var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
                 display_view.style.display = "block";
+                display_loading.style.display = "none";
                 display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
                 document.body.style.background = GreetingData.GetGradient(response["greetingdata"]);
                 document.title = response["greetingdata"].title;
             }
             else if (urlParams.get("mode") == "edit") {
                 OpenEditor(Editor.create(api, currentId, currentViewHash))
+                display_loading.style.display = "none";
             }
             else {
                 displayStart();
@@ -486,6 +498,7 @@
         //Cookie.setCookie("previousGreetings", null, 1);
         display_edit.style.display = "none";
         display_view.style.display = "none";
+        display_loading.style.display = "none";
 
         var previousGreetings = null;
         try {
@@ -509,6 +522,9 @@
 
         display_start.style.display = "block";
         document.title = "Virtual Greeting";
+
+        var c = ColorGenerator.GetBackgroundGradientFromColor(ColorGenerator.GetRandomColor());
+        document.body.style.background = ColorGenerator.GetGradient(c[0], c[1], c[2], c[3]);
     }
 
     async function EditButton(id, hash) {
@@ -542,5 +558,14 @@
         await SaveCurrentGreeting();
     }
 
+    function SetLoading() {
+        document.body.style.background = "rgb(0, 0, 0)";
+        display_loading.style.display = "block";
+        var c = ColorGenerator.GetBackgroundGradientFromColor(ColorGenerator.HSV2HEX([90, 0, 0.1]))
+        var g = ColorGenerator.GetGradient(c[0], c[1], c[2], c[3]);
+        document.body.style.background = g;
+    }
+
+    SetLoading();
     Main(new URLSearchParams(window.location.search));
 </script>

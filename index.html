@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <canvas id='canv' style="position: fixed; top: 0px; left: 0px; z-index: -10"></canvas>
+    <canvas id='canv' style="position: fixed; top: 0px; left: 0px; z-index: -10; display: none"></canvas>
 
     <div id="loading" class="mainContainer">
         <div style="position: fixed;left: calc(50% - 50px); top: calc(50% - 50px);">
@@ -45,6 +45,7 @@
                     <td><button title="click to view the page" class="toolButton" onclick="displayQrCode()">preview</button></td>
                     <td><button title="click to add a text to the page" class="toolButton" onclick="AddText()">add text</button></td>
                     <td><button title="click to change the background color of the page" class="toolButton" onclick="OpenBackgroundColorModal()">set color</button></td>
+                    <td><button title="click to toggle snow effect" class="toolButton" onclick="ToggleSnow()">toggle snow</button></td>
                 </tr>
             </table>
         </div>
@@ -180,13 +181,23 @@
 
             if (urlParams.get("mode") == "view") {
                 var response = JSON.parse(await api.GetGreetingData(currentId, currentViewHash));
+
                 display_view.style.display = "block";
                 display_loading.style.display = "none";
-                display_view.innerHTML = View.GetHtml(response["greetingdata"], false);
-                document.body.style.background = GreetingData.GetGradient(response["greetingdata"]);
-                document.title = response["greetingdata"].title;
-                lastTimeTable = View.GetTimeTable(response["greetingdata"]);
+
                 currentGreetingData = response["greetingdata"];
+
+                display_view.innerHTML = View.GetHtml(currentGreetingData, false);
+                document.body.style.background = GreetingData.GetGradient(currentGreetingData);
+                document.title = currentGreetingData.title;
+
+                lastTimeTable = View.GetTimeTable(currentGreetingData);
+
+                if (currentGreetingData.snow) {
+                    Snowy();
+                    c.style.display = "block";
+                }
+
                 checkTimeTable();
             }
             else if (urlParams.get("mode") == "edit") {
@@ -246,6 +257,21 @@
         }
         else {
             document.body.style.background = GreetingData.GetGradient(editor.greetingData);
+        }
+    }
+
+    function ToggleSnow() {
+        if (currentEditor.greetingData.snow) {
+            currentEditor.greetingData.snow = false;
+            shouldSnow = false;
+            c.style.display = "none";
+        }
+        else {
+            currentEditor.greetingData.snow = true;
+            shouldSnow = true;
+            Snowy();
+            console.log("ok");
+            c.style.display = "block";
         }
     }
 
@@ -661,6 +687,4 @@
         $ = c.getContext("2d");
     var w = c.width = window.innerWidth,
         h = c.height = window.innerHeight;
-
-    Snowy();
 </script>

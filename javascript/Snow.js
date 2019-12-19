@@ -1,6 +1,9 @@
+var shouldSnow = false;
+
 function Snowy() {
+    shouldSnow = true;
     var snow, arr = [];
-    var num = 100, tsc = 1, sp = 1;
+    var num = 50, tsc = 1, sp = 1;
     var sc = 1.3, t = 0, mv = 20, min = 1;
     for (var i = 0; i < num; ++i) {
         snow = new Flake();
@@ -14,7 +17,9 @@ function Snowy() {
     }
     go();
     function go() {
-        window.requestAnimationFrame(go);
+        if (shouldSnow) {
+            window.requestAnimationFrame(go);
+        }
         $.clearRect(0, 0, w, h);
         $.fillStyle = 'hsla(242, 95%, 3%, 0)';
         $.fillRect(0, 0, w, h);

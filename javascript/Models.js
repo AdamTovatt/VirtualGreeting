@@ -8,6 +8,7 @@ class GreetingData {
         this.backgroundColor4 = null;
         this.start = null;
         this.end = null;
+        this.snow = false;
     }
 
     static GetGradient(greetingData) {
